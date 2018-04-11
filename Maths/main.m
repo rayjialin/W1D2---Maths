@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AdditionQuestion.h"
+#import "Question.h"
 #import "InputHandler.h"
 #import "ScoreKeeper.h"
+#import "QuestionManager.h"
+#import "QuestionFactory.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -17,14 +19,16 @@ int main(int argc, const char * argv[]) {
         BOOL gameOn = YES;
         NSString *quit = @"quit";
         NSLog(@"Do The Math!");
-//        int rightCounter = 0;
-//        int wrongCounter = 0;
         
         ScoreKeeper *scoreKeeper = [[ScoreKeeper alloc]init];
+        QuestionManager *questionManager = [QuestionManager new];
+        QuestionFactory *questionFactory = [QuestionFactory new];
         
         while (gameOn) {
             
-            AdditionQuestion *mathQuestion = [[AdditionQuestion alloc] init];
+            Question *mathQuestion = [questionFactory generateRandomQuestion];
+            [mathQuestion generateQuestion];
+            [questionManager.questions addObject:mathQuestion];
             NSLog(@"%@", mathQuestion.question);
             
             
@@ -47,6 +51,9 @@ int main(int argc, const char * argv[]) {
                 scoreKeeper.wrongCounter ++;
             }
             
+            
+            //test time interval
+            NSLog(@"%@",[questionManager timeOutput]);
         }
         
         // Display the score
